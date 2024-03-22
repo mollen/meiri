@@ -43,12 +43,12 @@ def make_exercises(n):
 for n in range(n_days):
     content = base
 
-    content = content.replace("#級別", "學前班")
+    content = content.replace("§級別", "學前班")
 
     exercises = make_exercises(30)
     for i, exercise in enumerate(exercises):
         excerize = make_exercise()
-        content = content.replace(f"#{i+1:02}", exercise)
+        content = content.replace(f"§{i+1:02}", exercise)
 
     with open(f"meiri{n}.tex", "w") as f_out:
         f_out.write(content)
