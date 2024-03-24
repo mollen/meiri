@@ -1,13 +1,22 @@
 #!/usr/bin/env python3
 
+import argparse
 import glob
 import numpy as np
 import os
 import pypdf
 
 
-n_days = 10
-difficulty = 1
+parser = argparse.ArgumentParser(prog="generate")
+parser.add_argument(
+    "-n", "--n_days", type=int, help="日數，即幾張題目", default=10,
+)
+parser.add_argument(
+    "-d", "--difficulty", type=int, help="難度", default=1,
+)
+args = parser.parse_args()
+n_days = args.n_days
+difficulty = args.difficulty
 tags = ["幼兒園", "學前班"]
 
 assert difficulty < len(tags)
