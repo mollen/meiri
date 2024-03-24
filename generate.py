@@ -46,11 +46,11 @@ def make_add_less_ten():
 
 def make_sub_greater_zero():
     na = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-    pa = np.array([1, 5, 4, 3, 2, 2, 2, 2, 1, 1], dtype=float)
+    pa = np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1], dtype=float)
     pa = pa / np.sum(pa)
 
     nb = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-    pb = np.array([1, 5, 4, 3, 2, 2, 2, 2, 1, 1], dtype=float)
+    pb = np.array([2, 4, 4, 3, 2, 1, 1, 1, 1, 1], dtype=float)
     pb = pb / np.sum(pb)
 
     a = get_number(na, pa)
@@ -59,10 +59,10 @@ def make_sub_greater_zero():
         a = get_number(na, pa)
         b = get_number(nb, pb)
 
-    return f"{a} - {b} = "
+    return f"{a} − {b} = "
 
 def make_add_sub_less_ten():
-    p_add = 0.7
+    p_add = 0.75
     exercise = ""
     if np.random.uniform() < p_add:
         exercise = make_add_less_ten()
