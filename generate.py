@@ -32,16 +32,27 @@ def get_number(n, p):
     )
     return int(number)
 
-def make_add_less_ten():
+def make_add_less_ten(na = None, pa = None, nb = None, pb = None):
     n = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
     p = np.array([1, 5, 4, 3, 2, 1, 2, 2, 1, 1], dtype=float)
-    p = p / np.sum(p)
-    a = get_number(n , p)
-    b = get_number(n , p)
+
+    na = n if na is None else na
+    pa = p if pa is None else pa
+    pa = pa / np.sum(pa)
+
+    nb = n if nb is None else nb
+    pb = p if pb is None else pb
+    pb = pb / np.sum(pb)
+
+    a = get_number(na , pa)
+    b = get_number(nb , pb)
     while 10 < a + b:
-        a = get_number(n, p)
-        b = get_number(n, p)
- 
+        a = get_number(na, pa)
+        b = get_number(nb, pb)
+
+    if np.random.uniform() < 0.5:
+        a, b = b, a
+
     return f"{a} + {b} = "
 
 def make_sub_greater_zero():
@@ -65,7 +76,10 @@ def make_add_sub_less_ten():
     p_add = 0.75
     exercise = ""
     if np.random.uniform() < p_add:
-        exercise = make_add_less_ten()
+        exercise = make_add_less_ten(
+            na=np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+            pa=np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1], dtype=float)
+        )
     else:
         exercise = make_sub_greater_zero()
     return exercise
@@ -85,6 +99,7 @@ def make_exercises(n, difficulty):
         while exercise in exercises:
             exercise = make_exercise(difficulty)
         exercises.append(exercise)
+    np.random.shuffle(exercises)
     return exercises
 
 for n in range(n_days):
