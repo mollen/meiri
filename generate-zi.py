@@ -34,14 +34,21 @@ hanzi = [
 
 parser = argparse.ArgumentParser(prog="30zi")
 parser.add_argument(
-    "-n", "--n_days", type=int, help="日數，即幾張題目", default=10,
+    "-n", "--n_days", type=int, help="日數，即幾張題目", default=1,
 )
 parser.add_argument(
     "-m", "--name", type=str, help="學生的名字", default="",
 )
+parser.add_argument(
+    "-c", "--chars", type=str, help="字帖的字，空字串變空字帖", nargs="?", const="", default=None,
+)
 args = parser.parse_args()
 n_days = args.n_days
 name = args.name
+input_zis = args.chars
+
+if input_zis is not None and n_days < len(input_zis) / 6:
+    n_days = int(np.ceil(len(input_zis) / 6))
 
 with open("30zi.tex", "r") as f_in:
     base = f_in.read()
@@ -55,10 +62,12 @@ def pick_zis():
     ).squeeze()
     theme = hanzi[theme_id]
     zi_ids = np.random.choice(np.arange(len(theme)), min(6, len(theme)), replace=False)
-    return [theme[zi_ids[i % len(zi_ids)]] for i in range(6)]
+    return [theme[i] for i in zi_ids]
 
-def make_sheet():
-    zis = pick_zis()
+def make_sheet(zis=None):
+    zis = pick_zis() if zis is None else zis
+    print(f"asdf{zis}asdf")
+    zis = [zis[i % len(zis)] for i in range(6)]
     sheet = base
     numerals = ["一", "二", "三", "四", "五", "六"]
     for i, zi in enumerate(zis):
@@ -70,7 +79,19 @@ def make_sheet():
     return sheet
 
 for n in range(n_days):
-    sheet = make_sheet()
+    if input_zis:
+        if len(input_zis) < 6:
+            zis = input_zis
+        else:
+            start = 6*n%len(input_zis)
+            end = 6*(n+1)%len(input_zis)
+            if end < start:
+                zis = input_zis[start:] + input_zis[:end]
+            else:
+                zis = input_zis[start:end]
+        sheet = make_sheet(zis)
+    else:
+        sheet = make_sheet()
     with open(f"30zi{n}.tex", "w") as f_out:
         f_out.write(sheet)
 
