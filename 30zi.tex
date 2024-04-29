@@ -9,9 +9,9 @@
 \usepackage{fontspec}
 \setCJKmainfont[Scale=2.5,Script=CJK,RawFeature=vertical,CJKShape=Expert,Vertical=Alternates]{Noto Sans Mono CJK KR}
 \setmainfont[Scale=2.5]{Noto Sans Mono CJK KR}
-\newCJKfontfamily{\zifont}{LXGW WenKai}[Scale=5,Script=CJK,RawFeature=vertical,CJKShape=Expert,Vertical=Alternates]
+\newCJKfontfamily{\zifont}{LXGW WenKai}[Scale=5.5,Script=CJK,RawFeature=vertical,CJKShape=Expert,Vertical=Alternates]
 
-\def\CJKmovesymbol#1{\raise.77em\hbox{#1}}
+\def\CJKmovesymbol#1{\raise.84em\hbox{#1}}
 \def\CJKmove{\let\CJKsymbol\CJKmovesymbol
     \let\CJKpunctsymbol\CJKmovesymbol}
 
@@ -21,6 +21,33 @@
 \usetikzlibrary{shapes.misc}
 \usepackage{xcolor}
 \definecolor{myred}{rgb}{0.8984, 0.15625, 0.15625}
+
+\newcommand\rectanglepath[5][]{%
+\scope[shift={(#2)},#1]%
+\scope[overlay]
+\node[font={\CJKfamily{zifont}\color{#4}}] at (0,0) {#5\rlap{\phantom{字}}};
+\endscope
+\draw[myred, line width=1pt] (-0.4,-0.4) rectangle ++(0.8,0.8);
+\draw[myred, dashed] (-0.4,0.4) coordinate (#3-tl)
+-- (0.4,-0.4) coordinate (#3-br);
+\draw[red, dashed] (0.4,0.4) coordinate (#3-tr)
+-- (-0.4,-0.4) coordinate (#3-bl);
+\draw[myred, dashed] (0,0.4) coordinate (#3-t)
+-- (0,-0.4) coordinate (#3-b);
+\draw[myred, dashed] (-0.4,0) coordinate (#3-l)
+-- (0.4,0) coordinate (#3-r);
+\endscope}
+
+\newcommand{\rad}[2]{
+    \rectanglepath{0,-#1}{A}{gray!40}{#2}
+    \rectanglepath{1,-#1}{B}{gray!30}{#2}
+    \rectanglepath{2,-#1}{C}{gray!20}{#2}
+    \rectanglepath{3,-#1}{D}{gray!10}{#2}
+    \rectanglepath{4,-#1}{E}{gray!00}{#2}
+    \scope[overlay, shift={(-0.25, -0.25)}]
+        \node[font=\footnotesize] at (5, -#1) {#2};
+    \endscope
+}
 
 
 \begin{document}
@@ -35,35 +62,21 @@
 
     \vspace{0.8cm}
 
-    \small \hfill 姓名\quad\begin{tikzpicture}
-        \node (X) [rounded rectangle, draw=none, fill=myred!10, minimum width=7cm, minimum height=1.5cm, inner sep=0pt] {\color{myred!40}\CJKfamily{zifont}\tiny 〇〇〇};
+    \small \hfill \begin{tikzpicture}[scale=2.5]
+        \node at (-1, 0.25) {姓名};
+        \rectanglepath{0,0}{m}{gray!20}{\phantom{名}}
+        \rectanglepath{1,0}{m}{gray!20}{\phantom{名}}
+        \rectanglepath{2,0}{m}{gray!20}{\phantom{名}}
+        \rectanglepath{3,0}{m}{gray!20}{\phantom{名}}
+        \draw[myred, line width=2pt] (-0.5,-0.5) coordinate (bl)
+-- (3.5,-0.5) coordinate (br) -- (3.5,-0.5) coordinate (br)
+-- (3.5,0.5) coordinate (tr) -- (-0.5,0.5) coordinate (tl)
+-- (-0.5,0.5) coordinate (tl) -- cycle;
     \end{tikzpicture}
 
     \vfill
 
     \begin{tikzpicture}[scale=2.5]
-        \newcommand\rectanglepath[5][]{%
-            \scope[shift={(#2)},#1]%
-            \scope[overlay]
-            \node[font={\CJKfamily{zifont}\color{#4}}] at (0,0) {#5\rlap{\phantom{字}}};
-            \endscope
-            \draw[myred, line width=1pt] (-0.4,-0.4) rectangle ++(0.8,0.8);
-            \draw[myred, dashed] (-0.4,0.4) coordinate (#3-tl)
-            -- (0.4,-0.4) coordinate (#3-br);
-            \draw[red, dashed] (0.4,0.4) coordinate (#3-tr)
-            -- (-0.4,-0.4) coordinate (#3-bl);
-            \draw[myred, dashed] (0,0.4) coordinate (#3-t)
--- (0,-0.4) coordinate (#3-b);
-            \draw[myred, dashed] (-0.4,0) coordinate (#3-l)
--- (0.4,0) coordinate (#3-r);
-            \endscope}
-        \newcommand{\rad}[2]{
-        \rectanglepath{0,-#1}{A}{gray!70}{#2}
-        \rectanglepath{1,-#1}{B}{gray!20}{#2}
-        \rectanglepath{2,-#1}{C}{gray!0}{#2}
-        \rectanglepath{3,-#1}{D}{gray!0}{#2}
-        \rectanglepath{4,-#1}{E}{gray!0}{#2}
-    }
 \rad{0}{一}
 \rad{1}{二}
 \rad{2}{三}
@@ -71,13 +84,9 @@
 \rad{4}{五}
 \rad{5}{六}
 \draw[myred, line width=2pt] (-0.5,-5.5) coordinate (bl)
--- (4.5,-5.5) coordinate (br);
-\draw[myred, line width=2pt] (4.5,-5.5) coordinate (br)
--- (4.5,0.5) coordinate (tr);
-\draw[myred, line width=2pt] (4.5,0.5) coordinate (tr)
--- (-0.5,0.5) coordinate (tl);
-\draw[myred, line width=2pt] (-0.5,0.5) coordinate (tl)
--- (-0.5,-5.5) coordinate (bl);
+-- (4.5,-5.5) coordinate (br) -- (4.5,-5.5) coordinate (br)
+-- (4.5,0.5) coordinate (tr)  -- (-0.5,0.5) coordinate (tl)
+-- (-0.5,0.5) coordinate (tl) -- cycle;
    \end{tikzpicture}
 
 \bigskip

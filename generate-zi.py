@@ -50,16 +50,19 @@ def pick_zis():
         p=p/np.sum(p),
     ).squeeze()
     theme = hanzi[theme_id]
-    zi_ids = np.random.choice(np.arange(len(theme)), 6, replace=False)
-    return [theme[i] for i in zi_ids]
+    zi_ids = np.random.choice(np.arange(len(theme)), min(6, len(theme)), replace=False)
+    return [theme[zi_ids[i % len(zi_ids)]] for i in range(6)]
 
 def make_sheet():
     zis = pick_zis()
     sheet = base
     numerals = ["一", "二", "三", "四", "五", "六"]
     for i, zi in enumerate(zis):
+        if zi == numerals[i]:
+            continue
         sheet = sheet.replace(numerals[i], zi)
-    sheet = sheet.replace("〇〇〇", name)
+    for z in name:
+        sheet = sheet.replace("""\phantom{名}""", z, 1)
     return sheet
 
 for n in range(n_days):
